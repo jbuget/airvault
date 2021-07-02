@@ -4,11 +4,14 @@
   "description": "Simple collaborative password manager in Node.js",
   "main": "index.js",
   "scripts": {
-    "db:reset": "node db/scripts/reset.js && npm run db:migrate && npm run db:seed",
-    "db:migrate": "sequelize db:migrate",
-    "db:seed": "sequelize db:seed:all",
+    "build": "npm run clean && tsc && npm run copy-files",
+    "clean": "rimraf dist/",
+    "copy-files": "copyfiles -V .sequelizerc .env bin/** dist/",
+    "db:reset": "npm run build && node dist/db/scripts/reset.js && npm run db:migrate && npm run db:seed",
+    "db:migrate": "(cd dist && sequelize db:migrate)",
+    "db:seed": "(cd dist && sequelize db:seed:all)",
     "prestart": "npm run db:migrate",
-    "start": "node bin/www",
+    "start": "npm run build && node dist/bin/www",
     "test": "NODE_ENV=test mocha --recursive --file test/test-helpers.js"
   },
   "repository": {
@@ -42,11 +45,19 @@
     "pg": "^8.6.0",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
+    "typescript": "^4.3.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/node": "^15.12.4",
+    "@types/oauth2-server": "^3.0.12",
+    "@types/uuid": "^8.3.0",
+    "@types/validator": "^13.1.4",
     "chai": "^4.3.4",
+    "copyfiles": "^2.4.1",
     "mocha": "^8.4.0",
+    "rimraf": "^3.0.2",
     "sinon": "^9.2.4"
   }
 }

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const AuthenticatedRequestUser = require('./AuthenticatedRequestUser');
-const AuthenticatedRequestClient = require('./AuthenticatedRequestClient');
+const { AuthenticatedRequestUser } = require('./AuthenticatedRequestUser');
+const { AuthenticatedRequestClient } = require('./AuthenticatedRequestClient');
 const { InvalidRequestError, InvalidTokenError } = require('oauth2-server');
 
 const environment = require('../../../../../config/environment');
@@ -121,7 +121,7 @@ class OAuth2ServerAuthenticatorModel {
   async getAccessToken(accessToken) {
     let decoded;
     try {
-       decoded = await jwt.verify(accessToken, environment.oauth.jwtSecret);
+      decoded = await jwt.verify(accessToken, environment.oauth.jwtSecret);
     } catch (err) {
       throw new InvalidTokenError('Access token expired');
     }
@@ -148,4 +148,4 @@ class OAuth2ServerAuthenticatorModel {
 
 }
 
-module.exports = OAuth2ServerAuthenticatorModel;
+module.exports = { OAuth2ServerAuthenticatorModel };
